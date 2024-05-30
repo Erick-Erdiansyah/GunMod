@@ -1,18 +1,17 @@
-﻿using System;
+﻿using BepInEx.Logging;
+using BepInEx;
+using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BepInEx;
-using BepInEx.Logging;
-using HarmonyLib;
-using main.Patches;
 
-namespace main
+namespace GunMod
 {
     [BepInPlugin(modGUID, modName, modVersion)]
     public class Main : BaseUnityPlugin
     {
-        private const string modGUID = "Librarian.Test";
+        private const string modGUID = "Librarian.GunMod";
         private const string modName = "GunMod";
         private const string modVersion = "0.0.1";
 
@@ -23,8 +22,8 @@ namespace main
 
         void Awake()
         {
-            if (instance == null) 
-            { 
+            if (instance == null)
+            {
                 instance = this;
             }
 
@@ -33,8 +32,9 @@ namespace main
             logSource.LogInfo("hello, I'll add something here later");
 
             harmony.PatchAll(typeof(Main));
-            harmony.PatchAll(typeof(UnlimitedArmor));
+            harmony.PatchAll(typeof(Patches.UnlimitedArmor));
 
         }
     }
 }
+

@@ -4,22 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BepInEx;
 
-namespace main.Patches
+namespace GunMod.Patches
 {
-    [HarmonyPatch(typeof(HealthHaver),MethodType.Getter)]
+    [HarmonyPatch(typeof(HealthHaver), MethodType.Getter)]
     internal class UnlimitedArmor
     {
         [HarmonyPatch(nameof(HealthHaver.Armor))]
         [HarmonyPostfix]
-        static void Invincible(ref float __result) 
+        static void Invincible(ref float __result)
         {
             try
             {
-                __result = 20;
+                __result = 3;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 var log = new ManualLogSource("logger");
                 BepInEx.Logging.Logger.Sources.Add(log);
                 log.LogInfo(e.ToString());
@@ -28,5 +28,4 @@ namespace main.Patches
         }
 
     }
-
 }
