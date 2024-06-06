@@ -9,22 +9,46 @@ using System.Text;
 namespace GunMod.Patches
 {
     [HarmonyPatch(typeof(Gun), MethodType.Getter)]
-    internal class GunAttachment
+    internal static class AmmoAndCrit
     {
-        [HarmonyPatch(nameof(Gun.reloadTime))]
-        [HarmonyPostfix]
-        static void Invincible(Gun __instance)
+        [HarmonyPatch(nameof(Gun.AdjustedReloadTime))]
+        [HarmonyPrefix]
+        static void NoReload(Gun __instance,ref float __result)
         {
             try
             {
+                __result = 0;
+                __instance.blankDamageToEnemies = 100;
+                __instance.InfiniteAmmo = true;
                 __instance.reloadTime = 0;
+                __instance.CriticalChance = 1;
+                __instance.damageModifier = 20;
+                __instance.CriticalDamageMultiplier = 10;
             }
             catch (Exception e)
             {
-                var log = new ManualLogSource("logger");
-                BepInEx.Logging.Logger.Sources.Add(log);
-                log.LogInfo(e.ToString());
-                BepInEx.Logging.Logger.Sources.Remove(log);
+                FileLog.Log(e.ToString());
+            }
+        }
+
+    }
+  
+    [HarmonyPatch(typeof(PlayerController), MethodType.Getter)]
+    internal static class BlankAndGun
+    {
+        [HarmonyPatch(nameof(PlayerController.Blanks))]
+        [HarmonyPostfix]
+        static void None(PlayerController __instance,ref int __result)
+        {
+            try
+            {
+                __result = 3;
+                __instance.startingGunIds.Clear();
+                __instance.startingGunIds.Add(542);
+            }
+            catch (Exception e)
+            {
+                FileLog.Log(e.ToString());
             }
         }
 

@@ -32,11 +32,14 @@ namespace GunMod
             logSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
             logSource.LogInfo("hello, I'll add something here later");
-
             harmony.PatchAll(typeof(Main));
-            var patch = new Patches.ObjectSearcher();
-            logSource.LogInfo("sum stuff"+patch);
-            //harmony.PatchAll(typeof(Patches.UnlimitedArmor));
+            harmony.PatchAll(typeof(Patches.AmmoAndCrit));
+            logSource.LogInfo("Amo And Crit loaded");
+            harmony.PatchAll(typeof(Patches.BlankAndGun));
+            logSource.LogInfo("BlankAndGun loaded");
+            harmony.PatchAll(typeof(Patches.PickupOnCrack));
+            logSource.LogInfo("PickupOnCrack loaded");
+
 
         }
     }
