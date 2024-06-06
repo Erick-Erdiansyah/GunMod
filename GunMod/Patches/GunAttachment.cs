@@ -1,5 +1,6 @@
 ﻿using BepInEx.Logging;
 using HarmonyLib;
+using HutongGames.PlayMaker.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,16 @@ using System.Text;
 
 namespace GunMod.Patches
 {
-    [HarmonyPatch(typeof(HealthHaver), MethodType.Getter)]
-    internal class UnlimitedArmor
+    [HarmonyPatch(typeof(Gun), MethodType.Getter)]
+    internal class GunAttachment
     {
-        [HarmonyPatch(nameof(HealthHaver.Armor))]
+        [HarmonyPatch(nameof(Gun.reloadTime))]
         [HarmonyPostfix]
-        static void Invincible(ref float __result)
+        static void Invincible(Gun __instance)
         {
             try
             {
-                __result = 3;
+                __instance.reloadTime = 0;
             }
             catch (Exception e)
             {

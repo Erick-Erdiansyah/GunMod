@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GunMod
 {
@@ -32,7 +34,9 @@ namespace GunMod
             logSource.LogInfo("hello, I'll add something here later");
 
             harmony.PatchAll(typeof(Main));
-            harmony.PatchAll(typeof(Patches.UnlimitedArmor));
+            var patch = new Patches.ObjectSearcher();
+            logSource.LogInfo("sum stuff"+patch);
+            //harmony.PatchAll(typeof(Patches.UnlimitedArmor));
 
         }
     }
