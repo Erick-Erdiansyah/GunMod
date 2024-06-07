@@ -15,7 +15,7 @@ namespace GunMod
     {
         private const string modGUID = "Librarian.GunMod";
         private const string modName = "GunMod";
-        private const string modVersion = "0.0.1";
+        private const string modVersion = "0.1.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static Main instance;
@@ -34,11 +34,11 @@ namespace GunMod
             logSource.LogInfo("hello, I'll add something here later");
             harmony.PatchAll(typeof(Main));
             harmony.PatchAll(typeof(Patches.AmmoAndCrit));
-            logSource.LogInfo("Amo And Crit loaded");
+            logSource.LogInfo("Amo And Crit is loaded");
             harmony.PatchAll(typeof(Patches.BlankAndGun));
-            logSource.LogInfo("BlankAndGun loaded");
-            harmony.PatchAll(typeof(Patches.PickupOnCrack));
-            logSource.LogInfo("PickupOnCrack loaded");
+            logSource.LogInfo("gun and shield is loaded");
+            harmony.PatchAll(typeof(Patches.BlackFriday));
+            logSource.LogInfo("Black friday is loaded");
 
 
         }

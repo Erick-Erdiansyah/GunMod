@@ -11,19 +11,20 @@ namespace GunMod.Patches
     [HarmonyPatch(typeof(Gun), MethodType.Getter)]
     internal static class AmmoAndCrit
     {
-        [HarmonyPatch(nameof(Gun.AdjustedReloadTime))]
-        [HarmonyPrefix]
-        static void NoReload(Gun __instance,ref float __result)
+        [HarmonyPatch(nameof(Gun.ClipShotsRemaining))]
+        [HarmonyPostfix]
+        static void NoReload(Gun __instance,ref int __result)
         {
             try
             {
-                __result = 0;
+                __result = 100;
+                __instance.ammo = 100;
                 __instance.blankDamageToEnemies = 100;
                 __instance.InfiniteAmmo = true;
                 __instance.reloadTime = 0;
-                __instance.CriticalChance = 1;
-                __instance.damageModifier = 20;
-                __instance.CriticalDamageMultiplier = 10;
+                __instance.CriticalChance = 2;
+                __instance.damageModifier = 50;
+                __instance.CriticalDamageMultiplier = 20;
             }
             catch (Exception e)
             {
@@ -43,7 +44,9 @@ namespace GunMod.Patches
             try
             {
                 __result = 3;
+                __instance.healthHaver.Armor = 10;
                 __instance.startingGunIds.Clear();
+                // the strale gun
                 __instance.startingGunIds.Add(542);
             }
             catch (Exception e)
