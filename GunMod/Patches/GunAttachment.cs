@@ -9,8 +9,10 @@ using System.Text;
 namespace GunMod.Patches
 {
     [HarmonyPatch(typeof(Gun), MethodType.Getter)]
-    internal static class AmmoAndCrit
+    internal class AmmoAndCrit
     {
+        static public bool Infinite { get; set; }
+
         [HarmonyPatch(nameof(Gun.ClipShotsRemaining))]
         [HarmonyPostfix]
         static void NoReload(Gun __instance,ref int __result)
@@ -18,7 +20,7 @@ namespace GunMod.Patches
             try
             {
                 __result = 100;
-                __instance.InfiniteAmmo = true;
+                __instance.InfiniteAmmo = Infinite;
                 __instance.reloadTime = 0;
                 __instance.CriticalChance = 2;
                 __instance.damageModifier = 50;
@@ -42,12 +44,14 @@ namespace GunMod.Patches
             try
             {
                 __result = 0;
+                __instance.inventory = null;
                 __instance.healthHaver.Armor = 10;
                 __instance.startingGunIds.Clear();
                 // the strale gun = 542, yariLauncer = 16, cannon = 480 , dragunfire = 670 
                 __instance.startingGunIds.Add(542); // stratle
                 __instance.startingGunIds.Add(480); // cannon
                 __instance.startingPassiveItemIds.Add(137); // map
+                __instance.HasGun(331); // science_cannon
             }
             catch (Exception e)
             {
