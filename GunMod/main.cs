@@ -20,11 +20,9 @@ namespace GunMod
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static Main instance;
-        private Rect windowRect = new Rect(100, 40, 400, 300);
+        private Patches.Menu Menu;
         private bool ShowMenu = true;
-        bool infinite = false;
-        bool critAmmo = false;
-        string damage = "1";
+        
 
         internal ManualLogSource logSource;
 
@@ -37,12 +35,16 @@ namespace GunMod
 
             logSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
+            Menu = new Patches.Menu();
+
             logSource.LogInfo("Menu Loaded");
 
             harmony.PatchAll(typeof(Main));
+
+            harmony.PatchAll(typeof(Patches.BlankAndGun));
             
-            //harmony.PatchAll(typeof(Patches.BlankAndGun));
-            //logSource.LogInfo("gun and shield is loaded");
+            logSource.LogInfo("gun and God is loaded");
+
             //harmony.PatchAll(typeof(Patches.BlackFriday));
             //logSource.LogInfo("Black friday is loaded");
 
@@ -53,7 +55,7 @@ namespace GunMod
         {
             if (ShowMenu)
             {
-                windowRect = GUILayout.Window(0, windowRect, DrawMenuWindow, "Gun Mod Menu by Librarian");
+                Menu.Draw();
             }
         }
 
@@ -65,31 +67,6 @@ namespace GunMod
             }
         }
 
-        private void DrawMenuWindow(int windowID)
-        {
-            GUILayout.Label("Some mod Here");
-
-            critAmmo = GUILayout.Toggle(critAmmo, "button for crit ammo");
-            if (critAmmo)
-            {
-                harmony.PatchAll(typeof(Patches.AmmoAndCrit));
-            }
-
-            infinite = GUILayout.Toggle(infinite, "button for infinite ammo");
-            AmmoAndCrit.Infinite = infinite;
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("sum label ");
-            damage = GUILayout.TextField(damage,3);
-            if (GUILayout.Button("Button 2"))
-            {
-                int test = int.Parse(damage);
-                Debug.LogError(test);
-            }
-            GUILayout.EndHorizontal();
-
-            GUI.DragWindow();
-        }
     }
 }
 

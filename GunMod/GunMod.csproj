@@ -61,6 +61,7 @@
     <Compile Include="main.cs" />
     <Compile Include="Patches\GunAttachment.cs" />
     <Compile Include="Patches\LootMod.cs" />
+    <Compile Include="Patches\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
