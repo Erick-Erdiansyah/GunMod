@@ -20,7 +20,7 @@ namespace GunMod.Patches
 
         [HarmonyPatch(nameof(Gun.ClipShotsRemaining))]
         [HarmonyPostfix]
-        static void NoReload(Gun __instance,ref int __result)
+        static void Postfix(Gun __instance,ref int __result)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace GunMod.Patches
             }
             catch (Exception e)
             {
-                FileLog.Log(e.ToString());
+                Debug.LogError(e.ToString());
             }
         }
 
@@ -49,14 +49,17 @@ namespace GunMod.Patches
     [HarmonyPatch(typeof(PlayerController), MethodType.Getter)]
     internal static class BlankAndGun
     {
+        static public bool Armor {  get; set; }
+        static  public float armor {  get; set; } 
         static public int Blanks { get; set; }
+        static public bool blanks { get; set; }
         static public bool StartingWeapon { get; set; }
         static public bool GodMode { get; set; }
         static public bool RandomGun {get; set;}
 
         [HarmonyPatch(nameof(PlayerController.Blanks))]
         [HarmonyPostfix]
-        static void None(PlayerController __instance,ref int __result)
+        static void Postfix(PlayerController __instance,ref int __result)
         {
             try
             {
@@ -64,6 +67,12 @@ namespace GunMod.Patches
                 {
                     __instance.healthHaver.IsVulnerable = false;
                 }
+
+                if (Armor)
+                {
+                    __instance.healthHaver.Armor = armor;
+                }
+
                 if (StartingWeapon)
                 {
                     __instance.startingGunIds.Clear();
@@ -77,7 +86,10 @@ namespace GunMod.Patches
                     __instance.ChangeToRandomGun();
                     __instance.CharacterUsesRandomGuns = true;
                 }
-                __result = Blanks;
+                if (blanks)
+                {
+                    __result = Blanks;
+                }
 
             }
             catch (Exception e)

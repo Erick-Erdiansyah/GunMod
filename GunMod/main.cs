@@ -16,7 +16,7 @@ namespace GunMod
     {
         private const string modGUID = "Librarian.GunMod";
         private const string modName = "GunMod";
-        private const string modVersion = "0.1.0";
+        private const string modVersion = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static Main instance;
@@ -30,7 +30,7 @@ namespace GunMod
         {
             if (instance == null)
             {
-                instance = this;
+                 instance = this;
             }
 
             logSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
@@ -41,12 +41,17 @@ namespace GunMod
 
             harmony.PatchAll(typeof(Main));
 
-            harmony.PatchAll(typeof(Patches.BlankAndGun));
-            
-            logSource.LogInfo("gun and God is loaded");
+            harmony.PatchAll(typeof(Patches.AmmoAndCrit));
 
-            //harmony.PatchAll(typeof(Patches.BlackFriday));
-            //logSource.LogInfo("Black friday is loaded");
+            logSource.LogInfo("Gun Modification loaded");
+
+            harmony.PatchAll(typeof(Patches.BlankAndGun));
+
+            logSource.LogInfo("Player status modification loaded");
+
+            harmony.PatchAll(typeof(Patches.BlackFriday));
+
+            logSource.LogInfo("Shop modification loaded");
 
 
         }
